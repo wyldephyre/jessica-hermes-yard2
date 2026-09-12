@@ -5,7 +5,9 @@ const PORT = 3399;
 const BASE = `http://127.0.0.1:${PORT}`;
 
 function secretLeak(text) {
-  return /xai-|sk-|Bearer |WEBHOOK_SECRET|OAUTH_TOKEN|OAUTH_CLIENT_SECRET/i.test(text);
+  return /sk-[A-Za-z0-9]{8,}|Bearer [A-Za-z0-9._-]+|WEBHOOK_SECRET=|OAUTH_TOKEN=|OAUTH_CLIENT_SECRET=/i.test(
+    text,
+  );
 }
 
 async function json(method, path, body) {

@@ -5,3 +5,5 @@
 .DS_Store
 data/
 dist/
+fixtures/iron/notes/demo.txt
+fixtures/iron/notes/from-test.txt
