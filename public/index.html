@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jessica on Hermes, Yard #2 desk</title>
+    <style>
+      :root {
+        --bg: #09090b;
+        --panel: #18181b;
+        --line: #3f3f46;
+        --text: #fafafa;
+        --muted: #a1a1aa;
+        --orange: #f97316;
+        --emerald: #10b981;
+        --rose: #fb7185;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        --sans: "Segoe UI", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); }
+      body { min-height: 100vh; }
+      header {
+        display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+        justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line);
+      }
+      header h1 { margin: 0; font-size: 1rem; letter-spacing: 0.04em; text-transform: uppercase; }
+      .banner { color: var(--orange); font-size: 0.8rem; }
+      .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-family: var(--mono); font-size: 12px; }
+      .pill {
+        border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; color: var(--muted);
+      }
+      .pill.ok { border-color: var(--emerald); color: var(--emerald); }
+      .pill.warn { border-color: var(--orange); color: var(--orange); }
+      .pill.bad { border-color: var(--rose); color: var(--rose); }
+      main {
+        display: grid; gap: 16px; padding: 16px;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 960px) {
+        main { grid-template-columns: 1.2fr 1fr; }
+      }
+      section {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 16px;
+      }
+      section h2 {
+        margin: 0 0 12px; font-size: 0.75rem; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--orange); font-family: var(--mono);
+      }
+      .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+      button, select, input, textarea {
+        font: inherit; color: var(--text); background: #09090b; border: 1px solid var(--line);
+        border-radius: 8px; padding: 8px 10px;
+      }
+      button { cursor: pointer; }
+      button.primary { background: var(--orange); color: #111; border-color: var(--orange); font-weight: 600; }
+      button.ok { background: transparent; border-color: var(--emerald); color: var(--emerald); }
+      button.bad { background: transparent; border-color: var(--rose); color: var(--rose); }
+      button.active { border-color: var(--orange); color: var(--orange); }
+      textarea, input[type="text"], input[type="number"] { width: 100%; }
+      textarea { min-height: 72px; }
+      ul { list-style: none; margin: 0; padding: 0; }
+      li.file, li.gate, li.act, li.prompt {
+        border-top: 1px solid var(--line); padding: 8px 0; font-size: 0.9rem;
+      }
+      li.file { display: flex; justify-content: space-between; gap: 8px; cursor: pointer; }
+      li.file.deny { color: var(--muted); }
+      .lock { font-family: var(--mono); font-size: 11px; color: var(--rose); }
+      .open { font-family: var(--mono); font-size: 11px; color: var(--emerald); }
+      pre {
+        white-space: pre-wrap; background: #09090b; border: 1px solid var(--line);
+        border-radius: 8px; padding: 10px; font-size: 12px; max-height: 220px; overflow: auto;
+      }
+      .muted { color: var(--muted); font-size: 0.85rem; }
+      footer { padding: 0 16px 24px; color: var(--muted); font-size: 0.8rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Jessica on Hermes</h1>
+        <div class="banner">For the Forgotten 99%, We Rise.</div>
+      </div>
+      <div class="meta" id="plane"></div>
+    </header>
+    <main>
+      <section>
+        <h2>File Explorer ACL</h2>
+        <p class="muted">Local iron only. Mode some allowlists <code>public</code> and <code>notes</code>. Writes wait on a Cap gate.</p>
+        <div class="row" id="acl-modes"></div>
+        <div class="row">
+          <button type="button" id="up">Up</button>
+          <span class="muted" id="cwd"></span>
+        </div>
+        <ul id="listing"></ul>
+        <pre id="preview">No file open.</pre>
+        <label class="muted" for="write-path">Write path</label>
+        <input id="write-path" type="text" value="notes/demo.txt" />
+        <label class="muted" for="write-body">Write body</label>
+        <textarea id="write-body">Yard #2 write from the desk.</textarea>
+        <div class="row"><button class="primary" type="button" id="write">Queue write</button></div>
+      </section>
+      <section>
+        <h2>Super Grok OAuth cost lane</h2>
+        <p class="muted">Bulk work stays on Super Grok. A specialist runs only after a reason, a heavy estimate, and Cap approval.</p>
+        <label class="muted" for="task">Task</label>
+        <textarea id="task">Rewrite product titles for the affiliate catalog.</textarea>
+        <label class="muted" for="tokens">Token estimate</label>
+        <input id="tokens" type="number" min="1" value="1200" />
+        <label class="muted" for="reason">Specialist reason (optional)</label>
+        <input id="reason" type="text" placeholder="catalog-copy" />
+        <div class="row"><button class="primary" type="button" id="route">Route</button></div>
+        <pre id="lane">No route yet.</pre>
+      </section>
+      <section>
+        <h2>Human gates</h2>
+        <ul id="gates"></ul>
+      </section>
+      <section>
+        <h2>Profile to harness</h2>
+        <p class="muted">One home. Cap's private Hermes desk stays off this repo.</p>
+        <div class="row">
+          <select id="profile"></select>
+        </div>
+        <p class="muted" id="harness"></p>
+      </section>
+      <section>
+        <h2>Coach voice</h2>
+        <p class="muted">One daily objective. FIRE is work and break hygiene. Weekly review is four questions. SideCoach.ai is inspiration only.</p>
+        <label class="muted" for="objective">Today's one objective</label>
+        <input id="objective" type="text" />
+        <div class="row">
+          <button type="button" id="save-obj">Save</button>
+          <button class="ok" type="button" id="check-obj">Check it</button>
+          <button type="button" id="fire-reset">Reset FIRE</button>
+        </div>
+        <p id="daily"></p>
+        <p id="fire"></p>
+        <ul id="weekly"></ul>
+      </section>
+      <section>
+        <h2>Activity</h2>
+        <ul id="activity"></ul>
+      </section>
+    </main>
+    <footer>Yard #2 public slice. No soul dump. No tokens in the tree. MIT.</footer>
+    <script>
+      let state = null;
+
+      async function send(action) {
+        const res = await fetch("/api/action", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(action),
+        });
+        state = await res.json();
+        render();
+      }
+
+      async function refresh() {
+        const res = await fetch("/api/state");
+        state = await res.json();
+        render();
+      }
+
+      function pill(label, cls) {
+        return `<span class="pill ${cls}">${label}</span>`;
+      }
+
+      function render() {
+        if (!state || state.error) return;
+        const jessica = state.plane.jessica;
+        const jcls = jessica.ok ? "ok" : jessica.status === "unconfigured" ? "warn" : "bad";
+        const ocls = state.plane.oauth === "configured" ? "ok" : "warn";
+        document.getElementById("plane").innerHTML = [
+          pill(state.plane.name, "ok"),
+          pill("Jessica " + jessica.status, jcls),
+          pill("OAuth " + state.plane.oauth, ocls),
+          pill(state.activeProfile.harness, ""),
+        ].join("");
+
+        const modes = document.getElementById("acl-modes");
+        modes.innerHTML = "";
+        for (const mode of ["none", "some", "all"]) {
+          const btn = document.createElement("button");
+          btn.textContent = mode;
+          if (mode === state.acl.mode) btn.className = "active";
+          btn.onclick = () => send({ type: "acl.set-mode", mode });
+          modes.appendChild(btn);
+        }
+
+        document.getElementById("cwd").textContent = "/" + (state.files.cwd || "");
+        const listing = document.getElementById("listing");
+        listing.innerHTML = "";
+        if (state.files.denyReason) {
+          listing.innerHTML = `<li class="file deny">Denied: ${state.files.denyReason}</li>`;
+        } else {
+          for (const entry of state.files.listing || []) {
+            const li = document.createElement("li");
+            li.className = "file " + (entry.access === "deny" ? "deny" : "");
+            li.innerHTML = `<span>${entry.kind === "dir" ? "▸" : "·"} ${entry.name}</span><span class="${entry.access === "allow" ? "open" : "lock"}">${entry.access}</span>`;
+            li.onclick = () => {
+              if (entry.kind === "dir") send({ type: "files.list", path: entry.rel });
+              else send({ type: "files.read", path: entry.rel });
+            };
+            listing.appendChild(li);
+          }
+        }
+        document.getElementById("preview").textContent = state.files.preview
+          ? state.files.preview.rel + "\n\n" + state.files.preview.text
+          : "No file open.";
+
+        document.getElementById("lane").textContent = state.lastLane
+          ? JSON.stringify(state.lastLane, null, 2)
+          : "No route yet.";
+
+        const gates = document.getElementById("gates");
+        gates.innerHTML = "";
+        for (const gate of state.gates) {
+          const li = document.createElement("li");
+          li.className = "gate";
+          const actions = gate.status === "pending"
+            ? `<div class="row"><button class="ok" data-id="${gate.id}" data-d="approved">Approve</button><button class="bad" data-id="${gate.id}" data-d="denied">Deny</button></div>`
+            : `<span class="muted">${gate.status}</span>`;
+          li.innerHTML = `<div><strong>${gate.id}</strong> ${gate.summary}</div>${actions}`;
+          gates.appendChild(li);
+        }
+        gates.onclick = (ev) => {
+          const btn = ev.target.closest("button[data-id]");
+          if (!btn) return;
+          send({ type: "gate.decide", id: btn.dataset.id, decision: btn.dataset.d });
+        };
+
+        const select = document.getElementById("profile");
+        if (select.childElementCount === 0) {
+          for (const p of state.profiles) {
+            const opt = document.createElement("option");
+            opt.value = p.id;
+            opt.textContent = p.label + " → " + p.harness;
+            select.appendChild(opt);
+          }
+          select.onchange = () => send({ type: "profile.select", id: select.value });
+        }
+        select.value = state.activeProfile.id;
+        document.getElementById("harness").textContent =
+          "Active: " + state.activeProfile.label + " routes to " + state.activeProfile.harness + ".";
+
+        const obj = document.getElementById("objective");
+        if (document.activeElement !== obj) obj.value = state.coach.daily.objective;
+        const checked = state.coach.daily.checkedAt
+          ? "Checked " + state.coach.daily.checkedAt
+          : "Not checked yet.";
+        document.getElementById("daily").textContent = checked;
+        const fire = state.coach.fire;
+        const mins = Math.ceil(fire.remainingSec / 60);
+        document.getElementById("fire").textContent =
+          `FIRE ${fire.phase} · ${mins} min left · ${fire.nudge}`;
+        document.getElementById("weekly").innerHTML = state.coach.weekly.prompts
+          .map((p) => `<li class="prompt">${p}</li>`)
+          .join("");
+
+        document.getElementById("activity").innerHTML = state.activity
+          .map((a) => `<li class="act"><span class="muted">${a.at}</span><br>${a.text}</li>`)
+          .join("");
+      }
+
+      document.getElementById("up").onclick = () => {
+        const cwd = state?.files?.cwd || "";
+        const parts = cwd.split("/").filter(Boolean);
+        parts.pop();
+        send({ type: "files.list", path: parts.join("/") });
+      };
+      document.getElementById("write").onclick = () => send({
+        type: "files.write",
+        path: document.getElementById("write-path").value,
+        content: document.getElementById("write-body").value,
+      });
+      document.getElementById("route").onclick = () => send({
+        type: "lane.route",
+        task: document.getElementById("task").value,
+        tokensEstimate: Number(document.getElementById("tokens").value),
+        specialistReason: document.getElementById("reason").value || undefined,
+      });
+      document.getElementById("save-obj").onclick = () => send({
+        type: "coach.set-objective",
+        objective: document.getElementById("objective").value,
+      });
+      document.getElementById("check-obj").onclick = () => send({ type: "coach.check-daily" });
+      document.getElementById("fire-reset").onclick = () => send({ type: "coach.fire-reset" });
+
+      refresh();
+      setInterval(refresh, 4000);
+    </script>
+  </body>
+</html>
