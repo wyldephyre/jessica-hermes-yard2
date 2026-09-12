@@ -45,14 +45,61 @@ npm run typecheck
 npm run verify
 ```
 
-`npm run verify` runs the tests, starts the desk, and hits the HTTP path for ACL, cost lane, gates, and coach.
+`npm run verify` runs the tests, starts the desk, and hits the HTTP path for ACL, cost lane, gates, and coach. It also runs the Hermes skill CLI against that live desk.
+
+## Demo in Hermes Desktop
+
+The localhost desk stays the judge and the API. Cap-facing next is the Hermes skill. Panel and plugin work is stretch. Do not block on them.
+
+### Copy the skill onto JessicaHermes
+
+This repo ships the files. Copy them onto Cap iron yourself. Do not point an agent at the live Hermes install.
+
+```bash
+cp -R hermes/skills/yard2-desk ~/.hermes/skills/yard2-desk
+```
+
+On Windows, copy the same folder to `%USERPROFILE%\.hermes\skills\yard2-desk`.
+
+Keep the Node desk running from this checkout (`npm start`). Open a new Hermes Desktop session and run `/yard2-desk`.
+
+### Commands the skill runs
+
+The CLI posts `DeskAction` values from `src/domain.ts` to `POST /api/action`. It reads `GET /api/state`. It does not add a second model.
+
+```bash
+npm run skill -- home
+npm run skill -- acl some
+npm run skill -- write notes/from-skill.txt gated skill write
+npm run skill -- approve gate_2
+npm run skill -- lane titles 1200
+npm run skill -- lane titles 9000 skill-escalate
+npm run skill -- coach-one
+npm run skill -- demo
+```
+
+Live mode uses `YARD2_DESK_URL` (default `http://127.0.0.1:3344`). Mock mode (`YARD2_DESK_MODE=mock`) boots a throwaway copy of the same desk from this checkout. Mock needs `src/desk.ts`. Set `YARD2_REPO` if you copied only the skill folder.
+
+Cap demo, under three minutes, after the desk is up:
+
+1. `/yard2-desk home` shows the control plane.
+2. `/yard2-desk acl some`, then `none`, then `all`, then `some`
+3. Write a note and approve the gate
+4. Route a short task (stays Super Grok). Route `skill-escalate` at 9000 tokens, approve, route again
+5. `/yard2-desk coach-one`
+
+```bash
+npm run skill -- demo
+node scripts/skill-metric.mjs --require-target
+```
 
 ## Yard thin-slice scope
 
 In this repo:
 
 - MIT license.
-- Local Node desk (`src/desk.ts`) and one page (`public/index.html`).
+- Local Node desk (`src/desk.ts`) and one page (`public/index.html`). This is the judge and OSS demo. Do not delete it.
+- Hermes skill at `hermes/skills/yard2-desk` (`SKILL.md` plus `scripts/desk.mjs`). Copy onto JessicaHermes.
 - Domain types in `src/domain.ts`. ACL in `src/acl.ts`. Cost lane in `src/cost-lane.ts`.
 - Fixture iron root at `fixtures/iron` (`public`, `notes`, `secrets`). The secrets file is a deny demo. It holds no tokens.
 - Env names only in `.env.example`. No keys, tokens, or OAuth secrets in the tree.
@@ -63,5 +110,6 @@ Out of this repo:
 - Battle Buddy, ShipBit, wingman-ai, or a the99-hermes rename.
 - Zo merge product work, Stripe, wallets, or an external database.
 - A SideCoach.ai rebrand. Coach is three hooks, not their product.
+- A Hermes panel or plugin. Day-one surface is the skill.
 
-Phase: Yard #2 scaffold. Jessica stays the data layer. Stripe stays on Zo when that work exists. This desk does not open a database.
+Phase: Yard #2 Path A. Jessica stays the data layer. Stripe stays on Zo when that work exists. This desk does not open a database.

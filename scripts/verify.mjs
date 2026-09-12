@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 
 const PORT = 3399;
@@ -109,7 +109,27 @@ try {
   if (state.coach.weekly.prompts.length !== 4) throw new Error("weekly review prompts missing");
   if (state.coach.fire.kind !== "fire-cadence") throw new Error("FIRE hook missing");
 
+  const skill = spawnSync(
+    process.execPath,
+    ["hermes/skills/yard2-desk/scripts/desk.mjs", "demo", "--json"],
+    {
+      encoding: "utf8",
+      env: { ...process.env, YARD2_DESK_MODE: "live", YARD2_DESK_URL: BASE },
+    },
+  );
+  if (secretLeak(skill.stdout) || secretLeak(skill.stderr)) {
+    throw new Error("secret-shaped text leaked from skill demo");
+  }
+  if (skill.status !== 0) {
+    throw new Error(`skill live demo failed: ${skill.stdout} ${skill.stderr}`);
+  }
+  const demo = JSON.parse(skill.stdout);
+  if (!demo.musts || demo.musts.some((row) => !row.ok)) {
+    throw new Error("skill live demo missed a Cap must");
+  }
+
   console.log("verify.mjs: desk HTTP path passed");
+  console.log("verify.mjs: Hermes skill live demo passed");
 } catch (err) {
   failed = true;
   console.error(err);
