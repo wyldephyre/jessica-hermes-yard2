@@ -7,3 +7,5 @@ data/
 dist/
 fixtures/iron/notes/demo.txt
 fixtures/iron/notes/from-test.txt
+fixtures/iron/notes/from-skill.txt
+.audit/

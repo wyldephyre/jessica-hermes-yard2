@@ -11,7 +11,8 @@
     "start": "tsx src/desk.ts",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "verify": "tsx --test tests/*.test.ts && node scripts/verify.mjs"
+    "skill": "node hermes/skills/yard2-desk/scripts/desk.mjs",
+    "verify": "tsx --test tests/*.test.ts && node scripts/verify.mjs && node scripts/skill-metric.mjs --require-target"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
