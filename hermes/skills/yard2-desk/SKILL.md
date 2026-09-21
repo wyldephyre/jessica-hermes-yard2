@@ -21,6 +21,10 @@ metadata:
 
 Cap-facing control plane for Jessica on Hermes. The Node desk on localhost is the judge and API. This skill does not replace that desk.
 
+`/yard2-desk` is **not** a Desktop builtin slash. It is an unknown command. After `/reload-skills` (or a restart), ask in plain language: `Use yard2-desk: home`. `/skills` lists it.
+
+Live tree on Cap iron: `D:\TheForge\JessicaHermes\skills\software-development\yard2-desk`.
+
 ## When to use
 
 Use when Cap asks for the Yard #2 control plane, File Explorer ACL, a write or specialist approve gate, Super Grok vs specialist, or the daily ONE coach check.
@@ -47,34 +51,36 @@ Commands:
 4. `lane <task> [tokens] [reason]` then `approve <id>` keeps Super Grok as default. Specialist runs only after reason plus gate.
 5. `coach-one` marks the daily ONE check.
 
-Cap demo, under three minutes, after the desk is up:
+Cap demo, under three minutes, after the desk is up. In Hermes Desktop run `/reload-skills` first, then:
 
 ```text
-/yard2-desk home
-/yard2-desk acl some
-/yard2-desk acl none
-/yard2-desk acl all
-/yard2-desk acl some
-/yard2-desk write notes/from-skill.txt gated skill write
-/yard2-desk approve <id from write>
-/yard2-desk lane titles 1200
-/yard2-desk lane titles 9000 skill-escalate
-/yard2-desk approve <id from lane>
-/yard2-desk lane titles 9000 skill-escalate
-/yard2-desk coach-one
+Use yard2-desk: home
+Use yard2-desk: acl some
+Use yard2-desk: acl none
+Use yard2-desk: acl all
+Use yard2-desk: acl some
+Use yard2-desk: write notes/from-skill.txt gated skill write
+Use yard2-desk: approve <id from write>
+Use yard2-desk: lane titles 1200
+Use yard2-desk: lane titles 9000 skill-escalate
+Use yard2-desk: approve <id from lane>
+Use yard2-desk: lane titles 9000 skill-escalate
+Use yard2-desk: coach-one
 ```
 
-Or one shot: `node scripts/desk.mjs demo`.
+Or one shot with no Hermes: `node scripts/desk.mjs demo` (desk must be up).
 
 `GET /api/state` and `POST /api/action` are the only HTTP paths. Action bodies are `DeskAction` in `src/domain.ts`.
 
 ## Pitfalls
 
+- Not a Desktop builtin slash. `/yard2-desk` is unknown. Use `/reload-skills`, `/skills`, or `Use yard2-desk: home`.
 - Live mode fails if the desk is not running. Start it. Do not open a second domain.
 - Mock mode does not keep state across separate CLI processes. Use `demo` or live mode for a Cap session.
 - Writes and specialist escalations wait for Cap. A short lane stays on Super Grok.
 - Do not dump soul files, CoS notes, or secrets. `.env.example` has names only.
 - Panel and plugin work is stretch. Do not block this skill on them.
+- Stock Hermes `~/.hermes/skills/` is **not Cap's live tree**.
 
 ## Verification
 

@@ -51,17 +51,29 @@ npm run verify
 
 The localhost desk stays the judge and the API. Cap-facing next is the Hermes skill. Panel and plugin work is stretch. Do not block on them.
 
-### Copy the skill onto JessicaHermes
+`/yard2-desk` is **not** a Desktop builtin slash. Hermes Desktop will say unknown command. Use `/skills`, `/reload-skills`, or plain language.
 
-This repo ships the files. Copy them onto Cap iron yourself. Do not point an agent at the live Hermes install.
+### Copy the skill onto the live JessicaHermes tree
 
-```bash
-cp -R hermes/skills/yard2-desk ~/.hermes/skills/yard2-desk
+Primary install path on Cap iron:
+
+`D:\TheForge\JessicaHermes\skills\software-development\yard2-desk`
+
+Run the installer from this checkout so the path is not fat-fingered:
+
+```powershell
+powershell -File scripts/install-skill.ps1
 ```
 
-On Windows, copy the same folder to `%USERPROFILE%\.hermes\skills\yard2-desk`.
+That copies `hermes/skills/yard2-desk/*` into the live tree. Then in Hermes Desktop run `/reload-skills` (or restart). Confirm with `/skills`. Ask in plain language:
 
-Keep the Node desk running from this checkout (`npm start`). Open a new Hermes Desktop session and run `/yard2-desk`.
+```text
+Use yard2-desk: home
+```
+
+Keep the Node desk running from this checkout (`npm start`).
+
+Footnote: stock Hermes stores personal skills under `~/.hermes/skills/`. That is **not Cap's live tree**. Live JessicaHermes loads `D:\TheForge\JessicaHermes\skills\<category>\<name>\SKILL.md`.
 
 ### Commands the skill runs
 
@@ -80,13 +92,15 @@ npm run skill -- demo
 
 Live mode uses `YARD2_DESK_URL` (default `http://127.0.0.1:3344`). Mock mode (`YARD2_DESK_MODE=mock`) boots a throwaway copy of the same desk from this checkout. Mock needs `src/desk.ts`. Set `YARD2_REPO` if you copied only the skill folder.
 
-Cap demo, under three minutes, after the desk is up:
+Cap demo, under three minutes, after the desk is up and `/reload-skills` has run:
 
-1. `/yard2-desk home` shows the control plane.
-2. `/yard2-desk acl some`, then `none`, then `all`, then `some`
+1. `Use yard2-desk: home` shows the control plane.
+2. `Use yard2-desk: acl some`, then `none`, then `all`, then `some`
 3. Write a note and approve the gate
 4. Route a short task (stays Super Grok). Route `skill-escalate` at 9000 tokens, approve, route again
-5. `/yard2-desk coach-one`
+5. `Use yard2-desk: coach-one`
+
+Judge proof with no Hermes: desk must be up, then:
 
 ```bash
 npm run skill -- demo
@@ -99,7 +113,7 @@ In this repo:
 
 - MIT license.
 - Local Node desk (`src/desk.ts`) and one page (`public/index.html`). This is the judge and OSS demo. Do not delete it.
-- Hermes skill at `hermes/skills/yard2-desk` (`SKILL.md` plus `scripts/desk.mjs`). Copy onto JessicaHermes.
+- Hermes skill at `hermes/skills/yard2-desk` (`SKILL.md` plus `scripts/desk.mjs`). Install with `scripts/install-skill.ps1` into the live JessicaHermes tree.
 - Domain types in `src/domain.ts`. ACL in `src/acl.ts`. Cost lane in `src/cost-lane.ts`.
 - Fixture iron root at `fixtures/iron` (`public`, `notes`, `secrets`). The secrets file is a deny demo. It holds no tokens.
 - Env names only in `.env.example`. No keys, tokens, or OAuth secrets in the tree.
